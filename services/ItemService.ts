@@ -1,10 +1,7 @@
 import { Item } from '../models/Item';
 
 class ItemService {
-  private items: Item[] = [
-    { id: '1', name: 'Item 1' },
-    { id: '2', name: 'Item 2' },
-  ];
+  private items: Item[] = [];
 
   getAllItems(): Item[] {
     return this.items;
@@ -13,7 +10,7 @@ class ItemService {
  addItem(name: string): string | null {
 
   if (name.length <= 2) {
-    return "O nome precisa ter mais de 2 caracteres";
+    return "O nome do jogo precisa ter mais de 2 caracteres";
   }
 
   const exists = this.items.find(
@@ -21,7 +18,7 @@ class ItemService {
   );
 
   if (exists) {
-    return "Já existe um item com esse nome";
+    return "Já existe um jogo com esse nome";
   }
 
   const newItem: Item = {

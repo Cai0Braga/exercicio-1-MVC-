@@ -31,7 +31,23 @@ export const ItemView: React.FC = () => {
   );
 
   return (
+    
     <View style={{ flex: 1, padding: 16 }}>
+        <Text
+  style={{
+    fontSize: 26,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    color: '#333',
+    marginBottom: 20,
+    marginTop: 10,
+    letterSpacing: 1
+  }}
+>
+  Adicione aqui seus jogos Favoritos !
+</Text>
+
+      
       <TouchableOpacity
         onPress={openDialog}
         style={{
@@ -41,7 +57,7 @@ export const ItemView: React.FC = () => {
           marginBottom: 16,
         }}
       >
-        <Text style={{ color: 'white', textAlign: 'center' }}>Adicionar Item</Text>
+        <Text style={{ color: 'white', textAlign: 'center' }}>Adicionar</Text>
       </TouchableOpacity>
 
       <FlatList
@@ -63,12 +79,12 @@ export const ItemView: React.FC = () => {
             backgroundColor: 'white',
             borderRadius: 8,
           }}>
-            <Text style={{ fontSize: 18, marginBottom: 16 }}>Adicionar Item</Text>
+            <Text style={{ fontSize: 18, marginBottom: 16 }}>Adicionar Game</Text>
             
             <TextInput
               value={inputText}
               onChangeText={setInputText}
-              placeholder="Nome do item"
+              placeholder="Nome do jogo"
               style={{
                 borderWidth: 1,
                 borderColor: '#ccc',
