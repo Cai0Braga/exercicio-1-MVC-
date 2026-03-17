@@ -30,6 +30,32 @@ class ItemService {
 
   return null;
 }
+  removeItem(id: string) {
+  this.items = this.items.filter(item => item.id !== id);
+}
+
+   updateItem(id: string, newName: string): string | null {
+
+    if (newName.length <= 2) {
+      return "O nome precisa ter mais de 2 caracteres";
+  }
+
+    const exists = this.items.find(
+    item => item.name.toLowerCase() === newName.toLowerCase() && item.id !== id
+  );
+
+    if (exists) {
+     return "Já existe um item com esse nome";
+  }
+
+     const item = this.items.find(item => item.id === id);
+
+    if (item) {
+      item.name = newName;
+  }
+
+  return null;
+}
 }
 
 export default new ItemService();

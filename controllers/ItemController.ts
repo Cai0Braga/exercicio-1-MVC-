@@ -34,11 +34,29 @@ if (error) {
     setDialogVisible(false);
   };
 
+  const removeItem = (id: string) => {
+    ItemService.removeItem(id);
+    loadItems();
+  }; 
+
+   const updateItem = (id: string, name: string) => {
+  const error = ItemService.updateItem(id, name);
+
+    if (error) {
+      alert(error);
+      return;
+   }
+
+  loadItems();
+};
+
   return {
-    items,
-    dialogVisible,
-    addItem,
-    openDialog,
-    closeDialog,
-  };
+  items,
+  dialogVisible,
+  addItem,
+  removeItem,
+  updateItem,
+  openDialog,
+  closeDialog,
+};
 };

@@ -12,58 +12,113 @@ import { Item } from '../models/Item';
 import { useItemController } from '../controllers/ItemController';
 
 export const ItemView: React.FC = () => {
-  const { items, dialogVisible, addItem, openDialog, closeDialog } = useItemController();
+  const {
+    items,
+    dialogVisible,
+    addItem,
+    removeItem,
+    updateItem,
+    openDialog,
+    closeDialog
+  } = useItemController();
+
   const [inputText, setInputText] = useState<string>('');
+  const [editingItem, setEditingItem] = useState<Item | null>(null);
 
   const handleAddItem = () => {
-    if (inputText.trim()) {
-      addItem(inputText.trim());
-      setInputText('');
-    } else {
-      Alert.alert('Erro', 'Digite um nome para o item');
+    if (!inputText.trim()) {
+      Alert.alert('Erro', 'Digite o nome do jogo');
+      return;
     }
+
+    if (editingItem) {
+      updateItem(editingItem.id, inputText.trim());
+      setEditingItem(null);
+    } else {
+      addItem(inputText.trim());
+    }
+
+    setInputText('');
+  };
+
+  const handleEdit = (item: Item) => {
+    setEditingItem(item);
+    setInputText(item.name);
+    openDialog();
   };
 
   const renderItem = ({ item }: { item: Item }) => (
-    <View style={{ padding: 16, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-      <Text>{item.name}</Text>
+    <View style={{
+      padding: 16,
+      borderBottomWidth: 1,
+      borderBottomColor: '#ccc',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }}>
+
+      <Text style={{ fontSize: 16 }}>{item.name}</Text>
+
+      <View style={{ flexDirection: 'row', gap: 10 }}>
+
+        <TouchableOpacity
+          onPress={() => handleEdit(item)}
+          style={{ backgroundColor: '#ffc107', padding: 8, borderRadius: 4 }}
+        >
+          <Text>Editar</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => removeItem(item.id)}
+          style={{ backgroundColor: '#dc3545', padding: 8, borderRadius: 4 }}
+        >
+          <Text style={{ color: 'white' }}>Excluir</Text>
+        </TouchableOpacity>
+
+      </View>
     </View>
   );
 
   return (
-    
     <View style={{ flex: 1, padding: 16 }}>
-        <Text
-  style={{
-    fontSize: 26,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    color: '#333',
-    marginBottom: 20,
-    marginTop: 10,
-    letterSpacing: 1
-  }}
->
-  Adicione aqui seus jogos Favoritos !
-</Text>
 
-      
+      <Text style={{
+        fontSize: 26,
+        fontFamily: 'monospace',
+        textAlign: 'center',
+        color: '#222',
+        marginBottom: 35,
+        marginTop: 10
+      }}>
+         Lista de Jogos Favoritos
+      </Text>
+
       <TouchableOpacity
-        onPress={openDialog}
+        onPress={() => {
+          setEditingItem(null);
+          openDialog();
+        }}
         style={{
           backgroundColor: '#007bff',
-          padding: 12,
-          borderRadius: 4,
+          padding: 14,
+          borderRadius: 8,
           marginBottom: 16,
         }}
       >
-        <Text style={{ color: 'white', textAlign: 'center' }}>Adicionar</Text>
+        <Text style={{ color: 'white', textAlign: 'center' }}>
+          Adicionar Jogo
+        </Text>
       </TouchableOpacity>
 
       <FlatList
         data={items}
         renderItem={renderItem}
         keyExtractor={(item) => item.id}
+        ListEmptyComponent={
+          <Text style={{ textAlign: 'center', marginTop: 20 }}>
+            Nenhum jogo adicionado
+          </Text>
+        }
       />
 
       <Modal visible={dialogVisible} transparent animationType="slide">
@@ -79,8 +134,10 @@ export const ItemView: React.FC = () => {
             backgroundColor: 'white',
             borderRadius: 8,
           }}>
-            <Text style={{ fontSize: 18, marginBottom: 16 }}>Adicionar Game</Text>
-            
+            <Text style={{ fontSize: 18, marginBottom: 16 }}>
+              {editingItem ? 'Editar Jogo' : 'Adicionar Jogo'}
+            </Text>
+
             <TextInput
               value={inputText}
               onChangeText={setInputText}
@@ -96,7 +153,10 @@ export const ItemView: React.FC = () => {
 
             <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
               <TouchableOpacity
-                onPress={closeDialog}
+                onPress={() => {
+                  setEditingItem(null);
+                  closeDialog();
+                }}
                 style={{ padding: 12, backgroundColor: '#ccc', borderRadius: 4, flex: 0.45 }}
               >
                 <Text style={{ textAlign: 'center' }}>Cancelar</Text>
@@ -106,7 +166,9 @@ export const ItemView: React.FC = () => {
                 onPress={handleAddItem}
                 style={{ padding: 12, backgroundColor: '#007bff', borderRadius: 4, flex: 0.45 }}
               >
-                <Text style={{ color: 'white', textAlign: 'center' }}>Adicionar</Text>
+                <Text style={{ color: 'white', textAlign: 'center' }}>
+                  {editingItem ? 'Salvar' : 'Adicionar Jogo'}
+                </Text>
               </TouchableOpacity>
             </View>
           </View>
