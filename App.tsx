@@ -1,25 +1,11 @@
-import { StyleSheet, View } from 'react-native';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
-import { ItemView } from './view/ItemView';
+import React from 'react';
+import { NavigationContainer } from '@react-navigation/native';
+import StackNavigation from './navigation/StackNavigation';
 
 export default function App() {
   return (
-    <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <ItemView />
-        </View>
-      </SafeAreaView>
-    </SafeAreaProvider>
-    
+    <NavigationContainer>
+      <StackNavigation />
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

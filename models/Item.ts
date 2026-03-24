@@ -1,4 +1,7 @@
-export interface Item {
-  id: string;
-  name: string;
+export default class Item {
+  nome: string;
+
+  constructor(nome: string) {
+    this.nome = nome;
+  }
 }
